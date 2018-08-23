@@ -1,18 +1,40 @@
 pragma solidity ^0.4.2;
+import "./SafeMath.sol";
 
 contract Election {
-	// set up a smoke Test to ensure we set up contract correctly
-	// 1. Make sure it can be deployed
-	// 2. Make sure it responds to the things it's supposed to respond to
-	
-	// Constructor -- needs to be declared public because it will be run when deployed to blockchain
-	// Store candidate
-	// Read candidate
+	using SafeMath for uint256;
+	// Model a candidate
+	// Store candidates
+	// Fetch candidate
+	// Store candidates count
+	struct Candidate {
+		uint id;
+		string name;
+		uint voteCount;
+	}
 
-	string public candidate;
-	// By declaring public, this state variable is given a Getter() function for free
+	mapping(uint => Candidate) public candidates;
+	// generate a candidates function for us that allows us to fetch the candidate from this mapping
+	// by changing the state of mapping, we will be changing the contract, interacting w blockchain
+
+	uint public candidatesCount;
+	// in solidity, there is no way to determine size of mapping, so no iterator
+
 
 	function Election () public {
-		candidate = "Candidate 1";
+		addCandidate("Candidate 1");
+		addCandidate("Candidate 2");
 	}
+
+	function addCandidate(string _name) private {
+		candidatesCount = candidatesCount.add(1);
+
+		candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
+		/*
+		candidates[candidatesCount].name = _name;
+		candidates[candidatesCount].id = candidatesCount;
+		candidates[candidatesCount].voteCount = 0;
+		*/
+	}
+
 }
